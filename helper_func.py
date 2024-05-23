@@ -25,7 +25,7 @@ from pyrogram.errors import FloodWait
     else:
         return True"""
 
-async def is_subscribed(filter, client, update):
+"""async def is_subscribed(filter, client, update):
     FORCE_SUB_CHANNEL = [-1001543718054, -1001740779320]
     if not FORCE_SUB_CHANNEL:
         return True
@@ -42,7 +42,7 @@ async def is_subscribed(filter, client, update):
         except UserNotParticipant:
             return False  # If the user is not a member of any channel, return False
 
-    return True  # If the loop completes without returning False, return True
+    return True  # If the loop completes without returning False, return True"""
     
 
 async def encode(string):
