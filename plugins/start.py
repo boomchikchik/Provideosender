@@ -161,7 +161,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 @Bot.on_message(filters.command("start") & filters.private)
 async def not_joined(client: Client, message: Message):
-    FORCE_SUB_CHANNELS = [-1001740779320, -1001543718054]
+    FORCE_SUB_CHANNELS = [-1002046164926,-1002181803557]
     buttons = []
 
     # Generate buttons for all specified channels
