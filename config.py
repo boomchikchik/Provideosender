@@ -29,7 +29,7 @@ OWNER_ID = int(os.environ.get("OWNER_ID", "5434500969"))
 
 
 #Id for This person
-PersonId = 0
+PersonId = ""
 
 
 #Port
