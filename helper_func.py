@@ -26,7 +26,7 @@ from pyrogram.errors import FloodWait
         return True"""
 
 async def is_subscribed(filter, client, update):
-    FORCE_SUB_CHANNEL = [-1002108280615]
+    FORCE_SUB_CHANNEL = [-1002108280615,-1002007661236]
     if not FORCE_SUB_CHANNEL:
         return True
     
