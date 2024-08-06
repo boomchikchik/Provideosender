@@ -18,6 +18,18 @@ from database.database import add_user, del_user, full_userbase, present_user
 
 
 
+DELETE_AFTER = 60*60*3   # 3 hours in seconds
+AUTO_DELETE_TIME = 180 # 3 hours in minutes (for user alert)
+
+async def delete_after_delay(message, delay):
+    await asyncio.sleep(delay)
+    try:
+        await message.delete()
+        #print(f"Deleted message {message.message_id} from chat {message.chat.id} after {delay} seconds.")
+    except Exception as e:
+        print(e)
+
+
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
@@ -27,7 +39,7 @@ async def start_command(client: Client, message: Message):
         except:
             pass
     text = message.text
-    if len(text)>7:
+    if len(text) > 7:
         try:
             base64_string = text.split(" ", 1)[1]
         except:
@@ -41,7 +53,7 @@ async def start_command(client: Client, message: Message):
             except:
                 return
             if start <= end:
-                ids = range(start,end+1)
+                ids = range(start, end + 1)
             else:
                 ids = []
                 i = start
@@ -55,18 +67,20 @@ async def start_command(client: Client, message: Message):
                 ids = [int(int(argument[1]) / abs(client.db_channel.id))]
             except:
                 return
+        else:
+            ids = []
+
         temp_msg = await message.reply("Please wait...")
         try:
-            messages = await get_messages(client, ids)
+            messages = await get_messages(client, ids)  # Replace with actual message retrieval logic
         except:
             await message.reply_text("Something went wrong..!")
             return
         await temp_msg.delete()
 
         for msg in messages:
-
             if bool(CUSTOM_CAPTION) & bool(msg.document):
-                caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
+                caption = CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, filename=msg.document.file_name)
             else:
                 caption = "" if not msg.caption else msg.caption.html
 
@@ -76,13 +90,42 @@ async def start_command(client: Client, message: Message):
                 reply_markup = None
 
             try:
-                await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
+                sent_msg = await msg.copy(
+                    chat_id=message.from_user.id,
+                    caption=caption,
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=reply_markup,
+                    protect_content=PROTECT_CONTENT
+                )
+                alert_msg = await message.reply_text(
+                    f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>{AUTO_DELETE_TIME} minutes</u> 🫥 <i></b>(Due to Copyright Issues)</i>."
+                )
+
+                # Schedule deletion for the copied message and alert message
+                asyncio.create_task(delete_after_delay(sent_msg, DELETE_AFTER))
+                asyncio.create_task(delete_after_delay(alert_msg, DELETE_AFTER))
+
                 await asyncio.sleep(0.5)
+
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-            except:
-                pass
+                try:
+                    sent_msg = await msg.copy(
+                        chat_id=message.from_user.id,
+                        caption=caption,
+                        parse_mode=ParseMode.HTML,
+                        reply_markup=reply_markup,
+                        protect_content=PROTECT_CONTENT
+                    )
+                    alert_msg = await message.reply_text(
+                        f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>{AUTO_DELETE_TIME} minutes</u> 🫥 <i></b>(Due to Copyright Issues)</i>."
+                    )
+
+                    # Schedule deletion for the copied message and alert message
+                    asyncio.create_task(delete_after_delay(sent_msg, DELETE_AFTER))
+                    asyncio.create_task(delete_after_delay(alert_msg, DELETE_AFTER))
+                except:
+                    pass
         return
     else:
         reply_markup = InlineKeyboardMarkup(
@@ -106,7 +149,6 @@ async def start_command(client: Client, message: Message):
             quote = True
         )
         return
-
     
 #=====================================================================================##
 
