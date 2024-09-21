@@ -10,7 +10,7 @@ from logging.handlers import RotatingFileHandler
 
 
 #Bot token @Botfather
-TG_BOT_TOKEN = "7135863419:AAHfUsLFOjJmvRmgB4NGYeQwpwirmoLN8ik" #shopdydealsbot
+TG_BOT_TOKEN = "7241514089:AAHX1pvxi1_YtGYb84gwqI9YuCFJ7Pb9FJw" #shopdydealsbot But NOW testerbot
 #TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7053528201:AAHNTewDvbUwbmUC7dM1uPMJ3F3smdrF7iM")
 
 #Your API ID from my.telegram.org
@@ -20,7 +20,7 @@ APP_ID = int(os.environ.get("APP_ID", "13216322"))
 API_HASH = os.environ.get("API_HASH", "15e5e632a8a0e52251ac8c3ccbe462c7")
 
 #Your db channel Id
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001755430657"))
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002201058165"))
 #CHANNEL_ID="@lsalalals"
 
 
@@ -37,7 +37,8 @@ PORT = os.environ.get("PORT", "3000")
 
 #Database 
 DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://new-user31:Qwerty_1234@cluster0.rw7ydev.mongodb.net/")
-DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
+#DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
+DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot2")
 
 #force sub channel id, if you want enable force sub
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "0"))
